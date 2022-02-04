@@ -48,7 +48,7 @@ axel을 활용하면 용량이 큰 파일을 빠르게 다운로드할 수 있�
 
 latteGan 오픈 소스였나.. 정확히 기억나지는 않는데 오픈 소스를  찾다가 shell script에 적혀있던 걸 발견한 것 같다. 신기한 점은 text를 활용해 gui를 표현하여 인터넷 링크 접속 파일 다운로드가 가능하다는 점이다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b224cf3d-e3f2-4cc3-ba40-61e9029ce96f/Untitled.png)
+![image](https://user-images.githubusercontent.com/58874807/152544290-407aaf7e-0752-4e84-86d6-66e4abf1066a.png)
 
 생각 보다 정교하다..
 
