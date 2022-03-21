@@ -84,8 +84,88 @@ sb.append(" world");
 
 [https://t1.daumcdn.net/cfile/tistory/99BE23375E2F133722](https://t1.daumcdn.net/cfile/tistory/99BE23375E2F133722)
 
-출처:
+# **시간 비교**
+
+### String : 685ms
+
+StringBuilder의 2750배, StringBuffer의 1275배 정도의 시간이 걸린다.
+
+```
+val duration: TimedValue<Unit> = measureTimedValue {
+var string = "a"
+for(iin 0 until 10000){
+        string += "kotlinWorld"
+    }
+}
+
+println("elapsedTime : ${duration}")
+
+//elapsedTime : TimedValue(value=kotlin.Unit, duration=685ms)
+```
+
+### StringBuilder : 249us
+
+StringBuffer의 1/2정도의 시간만 걸린다.
+
+```
+val timeStringBuilder: TimedValue<Unit> = measureTimedValue {
+var stringBuilder = StringBuilder("a")
+for(iin 0 until 10000){
+        stringBuilder.append("kotlinWorld")
+    }
+}
+
+println("stringBuilderTime : ${timeStringBuilder}")
+//stringBuilderTime : TimedValue(value=kotlin.Unit, duration=249us)
+```
+
+### StringBuffer : 537us
+
+StringBuilder의 2배 정도의 시간이 걸린다.
+
+```
+val timeStringBuffer: TimedValue<Unit> = measureTimedValue {
+var stringBuilder = StringBuffer("a")
+for(iin 0 until 10000){
+        stringBuilder.append("kotlinWorld")
+    }
+}
+
+println("stringBufferTime : ${timeStringBuffer}")
+//stringBufferTime : TimedValue(value=kotlin.Unit, duration=537us)
+```
+
+# [주의 사항]
+
+자 이제 StringBuilder와 StringBuffer의 append 연산을 살펴보자
+
+```
+@Overridepublic StringBuilder append(String str) {
+super.append(str);
+returnthis;
+}
+```
+
+코드1. StringBuilder의 append
+
+```
+@Overridepublic synchronized StringBuffer append(String str) {
+    toStringCache = null;
+super.append(str);
+returnthis;
+}
+```
+
+코드2. StringBuffer의 append
+
+둘의 차이를 알겠는가? 바로 위에서 언급한 synchronized 제어자의 차이이다. 기본적으로 **StringBuffer의 모든 메서드에는 Synchronized가 붙어있다.** 즉, **StringBuffer은 멀티스레드 환경에서 안전한 연산을 수행할 수 있는 클래스이며, StringBuilder 클래스는 멀티스레드 환경에서 안전하지 않은 클래스**이다.
+
+StringBuilder의 append에는 `synchronized` 가 붙어 있다. 이는 성능 저하를 일으킨다.
+
+왠만해서는 절대로 쓰면 안된다.
+
+# [출처]:
 
 [https://ifuwanna.tistory.com/221](https://ifuwanna.tistory.com/221)
 
-[IfUwanna IT]
+[https://kotlinworld.com/36](https://kotlinworld.com/36)
